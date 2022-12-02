@@ -89,6 +89,15 @@ function iniciarApp() {
             const recetaButton = document.createElement('BUTTON');
             recetaButton.classList.add('btn', 'btn-danger', 'w-100');
             recetaButton.textContent = 'Ver Receta';
+            // recetaButton.dataset.bsTarget = "#modal"; // <button> data-bs-target="#modal" </button>
+            // recetaButton.dataset.bsToggle = "modal"; // <button> data-bs-toggle="modal" </button>
+
+            /**Mandar a llamar otra función, que consulte la API y que se traiga esa receta en específico **/
+            /** Aquí utilizamos onclick porque este elemento no existe, no va a existir en el código HTML cuando el código de JavaScript se ejecute, sino que se genera hasta que el usuario selecciona algunas opciones. un eventListener no te serviría. */
+            recetaButton.onclick = function() {
+                seleccionarReceta(idMeal)
+            }
+
 
             /** Inyectar en el código HTML */
             /**
@@ -111,6 +120,19 @@ function iniciarApp() {
             resultado.appendChild(recetaContenedor);
 
         })
+    }
+
+    function seleccionarReceta(id) {
+        // console.log(id)
+        const url = `https://themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+        fetch(url)
+            .then(respuesta => respuesta.json())
+            .then(reslutado => mostrarRecetaModal(reslutado.meals[0]));
+    }
+
+    function mostrarRecetaModal(receta) {
+        console.log(receta);
     }
 
     function limpiarHTML(selector) {
