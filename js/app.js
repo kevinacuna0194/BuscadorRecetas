@@ -44,7 +44,9 @@ function iniciarApp() {
 
         const url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${categoria}`;
 
-        console.log(url);
+        fetch(url)
+            .then(restpuesta => restpuesta.json())
+            .then(resultado => console.log(resultado)); /** Está consultando en base a la selección del usuario, trae las recetas que pertenecen a esa categoría. */
 
     }
 
