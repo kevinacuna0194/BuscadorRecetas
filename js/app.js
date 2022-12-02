@@ -8,6 +8,8 @@ function iniciarApp() {
     const selectCategorias = document.querySelector('#categorias');
     selectCategorias.addEventListener('change', seleccionarCategoria);
 
+    const resultado = document.querySelector('#resultado');
+
     obtenerCategorias();
 
     function obtenerCategorias() {
@@ -55,7 +57,7 @@ function iniciarApp() {
          /** Iterar en los Resultados */
         recetas.forEach(receta => {
 
-            console.log(receta);
+            // console.log(receta);
 
             const { idMeal, strMeal, strMealThumb } = receta;
 
@@ -74,7 +76,34 @@ function iniciarApp() {
             const recetaCardBody = document.createElement('DIV');
             recetaCardBody.classList.add('card-body');
 
-            console.log(recetaImagen);
+            const recetaHeading = document.createElement('H3');
+            recetaHeading.classList.add('card-title', 'mb-3');
+            recetaHeading.textContent = strMeal;
+
+            const recetaButton = document.createElement('BUTTON');
+            recetaButton.classList.add('btn', 'btn-danger', 'w-100');
+            recetaButton.textContent = 'Ver Receta';
+
+            /** Inyectar en el código HTML */
+            /**
+             * contenedorCard
+             *   .card
+             *      img
+             *      .cardBody
+             *           h3
+             *           button
+             */
+            recetaCardBody.appendChild(recetaHeading);
+            recetaCardBody.appendChild(recetaButton);
+
+            recetaCard.appendChild(recetaImagen);
+            recetaCard.appendChild(recetaCardBody);
+
+            recetaContenedor.appendChild(recetaCard);
+
+            /** Muy importante es que este receta contenedor es algo que nosotros estamos generando con scripting; Entonces, se tienes que tomar un elemento real del código HTML, algo que sí esté disponible para entonces inyectar todo este código que se ha generado Y para ello tenemos este div con la ide de resultado que está vacío. */
+            resultado.appendChild(recetaContenedor);
+
         })
     }
 
