@@ -46,8 +46,36 @@ function iniciarApp() {
 
         fetch(url)
             .then(restpuesta => restpuesta.json())
-            .then(resultado => console.log(resultado)); /** Está consultando en base a la selección del usuario, trae las recetas que pertenecen a esa categoría. */
+            .then(resultado => mostrarRecetas(resultado.meals)); /** Está consultando en base a la selección del usuario, trae las recetas que pertenecen a esa categoría. */
+    }
 
+    function mostrarRecetas(recetas = []) {
+         /** console.log(recetas); Array(42) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ] */
+         
+         /** Iterar en los Resultados */
+        recetas.forEach(receta => {
+
+            console.log(receta);
+
+            const { idMeal, strMeal, strMealThumb } = receta;
+
+            const recetaContenedor = document.createElement('DIV');
+            recetaContenedor.classList.add('col-md-4');
+
+            const recetaCard = document.createElement('DIV');
+            recetaCard.classList.add('card', 'mb-4');
+
+            const recetaImagen = document.createElement('IMG');
+            recetaImagen.classList.add('card-img-top');
+            recetaImagen.alt = `Imagen de la receta ${strMeal}`; /** Texto alternativo */
+            recetaImagen.src = strMealThumb;
+
+            /** El Card debe tener un Body */
+            const recetaCardBody = document.createElement('DIV');
+            recetaCardBody.classList.add('card-body');
+
+            console.log(recetaImagen);
+        })
     }
 
 }
