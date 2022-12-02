@@ -52,9 +52,15 @@ function iniciarApp() {
     }
 
     function mostrarRecetas(recetas = []) {
-         /** console.log(recetas); Array(42) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ] */
-         
-         /** Iterar en los Resultados */
+        /** console.log(recetas); Array(42) [ {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, … ] */
+        limpiarHTML(resultado);
+
+        const heading = document.createElement('H2');
+        heading.classList.add('text-center', 'text-black', 'my-5');
+        heading.textContent = recetas.length ? 'Resultados' : 'No Hay Resultados';
+        resultado.appendChild(heading);
+
+        /** Iterar en los Resultados */
         recetas.forEach(receta => {
 
             // console.log(receta);
@@ -105,6 +111,12 @@ function iniciarApp() {
             resultado.appendChild(recetaContenedor);
 
         })
+    }
+
+    function limpiarHTML(selector) {
+        while (selector.firstChild) {
+            selector.removeChild(selector.firstChild);
+        }
     }
 
 }
