@@ -182,6 +182,11 @@ function iniciarApp() {
 
         /** LocalStorage */
         btnFavorito.onclick = function () {
+
+            if(existeStorage(idMeal)) {
+                return
+            }
+
             agregarFavorito({
                 id: idMeal,
                 titulo: strMeal,
@@ -207,8 +212,16 @@ function iniciarApp() {
     function agregarFavorito(receta) {
         // console.log(receta);
         /** Object { id: "52874", titulo: "Beef and Mustard Pie", img: "https://www.themealdb.com/images/media/meals/sytuqu1511553755.jpg" } */
-        const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
+        const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? []; /** Esto va a obtener de LocalStorage y lo va a convertir a un arreglo. Si no existe, entonces lo va a asignar como un arreglo vacio. Nullish coalescing operator (??) */
         localStorage.setItem('favoritos', JSON.stringify([...favoritos, receta]));
+    }
+
+    function existeStorage(id) {
+        const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
+        /** .some() va a iterar sobre todos los elementos de un arreglo y va a retornar si al menos uno cumple con la condición. 
+         * Si hay 100 elementos va a escanear cada uno de ellos y con que uno cumpla la condición este .some() va a retornar un true.
+        */
+        return favoritos.some(favorito => favorito.id === id);
     }
 
     function limpiarHTML(selector) {
