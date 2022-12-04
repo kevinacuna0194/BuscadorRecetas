@@ -5,13 +5,20 @@
  */
 function iniciarApp() {
 
-    const selectCategorias = document.querySelector('#categorias');
-    selectCategorias.addEventListener('change', seleccionarCategoria);
-
     const resultado = document.querySelector('#resultado');
-    const modal = new bootstrap.Modal('#modal', {});
 
-    obtenerCategorias();
+    const selectCategorias = document.querySelector('#categorias');
+    if (selectCategorias) {
+        selectCategorias.addEventListener('change', seleccionarCategoria);
+        obtenerCategorias();
+    }
+
+    const favoritosDiv = document.querySelector('.favoritos');
+    if(favoritosDiv) {
+        obtenerFavoritos();
+    }
+
+    const modal = new bootstrap.Modal('#modal', {});
 
     function obtenerCategorias() {
 
@@ -76,8 +83,8 @@ function iniciarApp() {
 
             const recetaImagen = document.createElement('IMG');
             recetaImagen.classList.add('card-img-top');
-            recetaImagen.alt = `Imagen de la receta ${strMeal}`; /** Texto alternativo */
-            recetaImagen.src = strMealThumb;
+            recetaImagen.alt = `Imagen de la receta ${strMeal ?? receta.titulo}`; /** Texto alternativo */
+            recetaImagen.src = strMealThumb ?? receta.img;
 
             /** El Card debe tener un Body */
             const recetaCardBody = document.createElement('DIV');
@@ -85,7 +92,7 @@ function iniciarApp() {
 
             const recetaHeading = document.createElement('H3');
             recetaHeading.classList.add('card-title', 'mb-3');
-            recetaHeading.textContent = strMeal;
+            recetaHeading.textContent = strMeal ?? receta.titulo;
 
             const recetaButton = document.createElement('BUTTON');
             recetaButton.classList.add('btn', 'btn-danger', 'w-100');
@@ -96,7 +103,7 @@ function iniciarApp() {
             /**Mandar a llamar otra función, que consulte la API y que se traiga esa receta en específico **/
             /** Aquí utilizamos onclick porque este elemento no existe, no va a existir en el código HTML cuando el código de JavaScript se ejecute, sino que se genera hasta que el usuario selecciona algunas opciones. un eventListener no te serviría. */
             recetaButton.onclick = function () {
-                seleccionarReceta(idMeal)
+                seleccionarReceta(idMeal ?? receta.id)
             }
 
             /** Inyectar en el código HTML */
@@ -243,6 +250,20 @@ function iniciarApp() {
         toastBody.textContent = mensaje;
 
         toast.show();
+    }
+
+    function obtenerFavoritos() {
+        const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
+
+        if (favoritos.length) {
+            mostrarRecetas(favoritos);
+            return
+        }
+
+        const noFavoritos = document.createElement('P');
+        noFavoritos.textContent = 'No hay favoritos aún';
+        noFavoritos.classList.add('fs-4', 'text-center', 'font-bold', 'mt-5');
+        favoritosDiv.appendChild(noFavoritos);
     }
 
     function limpiarHTML(selector) {
