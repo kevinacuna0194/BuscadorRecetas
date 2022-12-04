@@ -183,9 +183,10 @@ function iniciarApp() {
         /** LocalStorage */
         btnFavorito.onclick = function () {
 
-            if(existeStorage(idMeal)) {
+            if (existeStorage(idMeal)) {
                 eliminarFavorito(idMeal);
                 btnFavorito.textContent = 'Guardar Favorito';
+                mostrarToast('Eliminado Correctamente');
                 return
             }
 
@@ -195,7 +196,8 @@ function iniciarApp() {
                 img: strMealThumb
             });
 
-            btnFavorito.textContent ='Eliminar Favorito';
+            btnFavorito.textContent = 'Eliminar Favorito';
+            mostrarToast('Agregado Correctamente');
         }
 
         const btnCerrarModal = document.createElement('BUTTON');
@@ -226,14 +228,21 @@ function iniciarApp() {
         localStorage.setItem('favoritos', JSON.stringify(nuevosFavorito));
     }
 
-
-
     function existeStorage(id) {
         const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
         /** .some() va a iterar sobre todos los elementos de un arreglo y va a retornar si al menos uno cumple con la condición. 
          * Si hay 100 elementos va a escanear cada uno de ellos y con que uno cumpla la condición este .some() va a retornar un true.
         */
         return favoritos.some(favorito => favorito.id === id);
+    }
+
+    function mostrarToast(mensaje) {
+        const toastDiv = document.querySelector('#toast');
+        const toastBody = document.querySelector('.toast-body');
+        const toast = new bootstrap.Toast(toastDiv); //  Tienes que pasar el elemento donde quieres que se genere ese toast.
+        toastBody.textContent = mensaje;
+
+        toast.show();
     }
 
     function limpiarHTML(selector) {
